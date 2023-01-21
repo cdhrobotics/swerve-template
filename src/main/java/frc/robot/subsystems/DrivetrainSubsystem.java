@@ -8,10 +8,12 @@ import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 //import com.ctre.phoenix.sensors.PigeonIMU;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
+import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
@@ -55,7 +57,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = (6380.0 / 60.0 *
           SdsModuleConfigurations.MK4_L1.getDriveReduction() *
-          SdsModuleConfigurations.MK4_L1.getWheelDiameter() * Math.PI)/2;
+          SdsModuleConfigurations.MK4_L1.getWheelDiameter() * Math.PI)/4;
 
   //public static final double MAX_VELOCITY_METERS_PER_SECOND = 0.1;
   /**
@@ -92,16 +94,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private final SwerveModule m_backLeftModule;
   private final SwerveModule m_backRightModule;
   private final ADXRS450_Gyro m_gyro;
+  private SwerveModuleState[] swerveModuleStates;
   private final SlewRateLimiter xLimiter = new SlewRateLimiter(2);
   private final SlewRateLimiter yLimiter = new SlewRateLimiter(2);
   private final SlewRateLimiter turnLimiter = new SlewRateLimiter(2);
   private SwerveDriveOdometry odometry;
   ShuffleboardTab tab;
-
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
 
   public DrivetrainSubsystem() {
+
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
     m_gyro = new ADXRS450_Gyro();
 //      tab.addDouble("Angle", GetGyroValue());
@@ -177,6 +180,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
             BACK_RIGHT_MODULE_STEER_OFFSET
     );
 
+        
     zeroGyroscope();
   }
 
@@ -186,7 +190,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void zeroGyroscope() {
         m_gyro.reset();
-        odometry = new SwerveDriveOdometry(m_kinematics, getGyroscopeRotation(), null);
+        // odometry = new SwerveDriveOdometry(m_kinematics, getGyroscopeRotation(), null);
  }
 
 //  public DoubleSupplier GetGyroValue() {
@@ -198,7 +202,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void drive(ChassisSpeeds chassisSpeeds) {
-    m_chassisSpeeds = chassisSpeeds;
+    swerveModuleStates = m_kinematics.toSwerveModuleStates(chassisSpeeds);
+    setModuleStates(swerveModuleStates);
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
