@@ -41,7 +41,7 @@ public class DefaultDriveCommand extends CommandBase {
         m_drivetrainSubsystem.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                     -modifyAxis(m_translationXSupplier.getAsDouble(), xLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                    -modifyAxis(m_translationYSupplier.getAsDouble(), yLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                    modifyAxis(m_translationYSupplier.getAsDouble(), yLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
                     getTurnValue(),
                     m_drivetrainSubsystem.getGyroscopeRotation()
                 )
