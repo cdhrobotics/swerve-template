@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -99,13 +100,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private final SlewRateLimiter yLimiter = new SlewRateLimiter(2);
   private final SlewRateLimiter turnLimiter = new SlewRateLimiter(2);
   private SwerveDriveOdometry odometry;
+  private SendableChooser<String> driveModeSelector;
+  public final String kField = "Field";
+  public final String kRobot = "Robot";
+  
   ShuffleboardTab tab;
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
 
   public DrivetrainSubsystem() {
 
+
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+    driveModeSelector = new SendableChooser<String>();
+
+   driveModeSelector.setDefaultOption("Field oriented", kField);
+   driveModeSelector.addOption("Robot oriented", kRobot);
+   SmartDashboard.putData("Orientations", driveModeSelector);
     m_gyro = new ADXRS450_Gyro();
 //      tab.addDouble("Angle", GetGyroValue());
 
@@ -191,6 +202,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     zeroGyroscope();
   }
 
+ 
   /**
    * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
    * 'forwards' direction.
@@ -199,6 +211,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_gyro.reset();
         // odometry = new SwerveDriveOdometry(m_kinematics, getGyroscopeRotation(), null);
  }
+
+  public String getSelectorDriveMode() {
+        return driveModeSelector.getSelected();
+  }
 
 //  public DoubleSupplier GetGyroValue() {
 //        return m_gyro.getAngle();
@@ -239,9 +255,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
                 // odometry.update(
                 //         getGyroscopeRotation(),
-                //         states
+                //         m_frontLeftModule.Get
                 // );
         }
+        
 
   }
 

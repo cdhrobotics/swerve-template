@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DriveMode;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 import java.util.function.DoubleSupplier;
@@ -38,6 +39,7 @@ public class DefaultDriveCommand extends CommandBase {
     @Override
     public void execute() {
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
+        if(m_drivetrainSubsystem.getSelectorDriveMode() == m_drivetrainSubsystem.kField) {
         m_drivetrainSubsystem.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                     -modifyAxis(m_translationXSupplier.getAsDouble(), xLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
@@ -46,6 +48,16 @@ public class DefaultDriveCommand extends CommandBase {
                     m_drivetrainSubsystem.getGyroscopeRotation()
                 )
             );
+        
+        } else {
+            m_drivetrainSubsystem.drive(
+                new ChassisSpeeds(
+                    -modifyAxis(m_translationXSupplier.getAsDouble(), xLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                    modifyAxis(m_translationYSupplier.getAsDouble(), yLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                    getTurnValue()
+                )
+            );
+        }
     }
 
     @Override
