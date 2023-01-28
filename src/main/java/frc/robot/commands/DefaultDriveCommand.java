@@ -47,8 +47,9 @@ public class DefaultDriveCommand extends CommandBase {
                     getTurnValue(),
                     m_drivetrainSubsystem.getGyroscopeRotation()
                 )
+                
             );
-        
+            System.out.println("Calling Field");
         } else {
             m_drivetrainSubsystem.drive(
                 new ChassisSpeeds(
@@ -57,7 +58,10 @@ public class DefaultDriveCommand extends CommandBase {
                     getTurnValue()
                 )
             );
+            System.out.println("Calling Robot");
         }
+        // System.out.println();
+        // System.out.println();
     }
 
     @Override
