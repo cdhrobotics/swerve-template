@@ -1,5 +1,7 @@
 package com.swervedrivespecialties.swervelib;
 
+import com.swervedrivespecialties.swervelib.analog.AnalogAbsoluteConfiguration;
+import com.swervedrivespecialties.swervelib.analog.AnalogFactoryBuilder;
 import com.swervedrivespecialties.swervelib.ctre.*;
 import com.swervedrivespecialties.swervelib.rev.*;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -36,13 +38,12 @@ public final class Mk4iSwerveModuleHelper {
                 .build();
     }
 
-    private static SteerControllerFactory<?, SteerConfiguration<CanCoderAbsoluteConfiguration>> getNeoSteerFactory(Mk4ModuleConfiguration configuration) {
+    private static SteerControllerFactory<?, SteerConfiguration<AnalogAbsoluteConfiguration>> getNeoSteerFactory(Mk4ModuleConfiguration configuration) {
         return new NeoSteerControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withPidConstants(1.0, 0.0, 0.1)
                 .withCurrentLimit(configuration.getSteerCurrentLimit())
-                .build(new CanCoderFactoryBuilder()
-                        .withReadingUpdatePeriod(100)
+                .build(new AnalogFactoryBuilder()
                         .build());
     }
 
@@ -188,7 +189,7 @@ public final class Mk4iSwerveModuleHelper {
                 driveMotorPort,
                 new SteerConfiguration<>(
                         steerMotorPort,
-                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                        new AnalogAbsoluteConfiguration(steerEncoderPort)
                 )
         );
     }
@@ -243,7 +244,7 @@ public final class Mk4iSwerveModuleHelper {
                 driveMotorPort,
                 new SteerConfiguration<>(
                         steerMotorPort,
-                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                        new AnalogAbsoluteConfiguration(steerEncoderPort)
                 )
         );
     }
@@ -299,7 +300,7 @@ public final class Mk4iSwerveModuleHelper {
                 driveMotorPort,
                 new SteerConfiguration<>(
                         steerMotorPort,
-                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                        new AnalogAbsoluteConfiguration(steerEncoderPort)
                 )
         );
     }
@@ -354,7 +355,7 @@ public final class Mk4iSwerveModuleHelper {
                 driveMotorPort,
                 new SteerConfiguration<>(
                         steerMotorPort,
-                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                        new AnalogAbsoluteConfiguration(steerEncoderPort)
                 )
         );
     }
