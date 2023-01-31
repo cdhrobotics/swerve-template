@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveMode;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -60,8 +61,10 @@ public class DefaultDriveCommand extends CommandBase {
             );
             System.out.println("Calling Robot");
         }
-        // System.out.println();
-        // System.out.println();
+
+        SmartDashboard.putNumber("FL Module angle: " , this.m_drivetrainSubsystem.m_frontLeftModule.getSteerAngle());
+        SmartDashboard.putNumber("BL Module angle: " , this.m_drivetrainSubsystem.m_backLeftModule.getSteerAngle());
+        // System.out.println(this.m_drivetrainSubsystem.m_frontLeftModule.getSteerMotor().getAbsoluteAngle();
     }
 
     @Override

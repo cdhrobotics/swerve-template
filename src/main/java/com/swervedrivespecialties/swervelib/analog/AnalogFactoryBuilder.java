@@ -25,7 +25,8 @@ public class AnalogFactoryBuilder {
 
         @Override
         public double getAbsoluteAngle() {
-            return analogEncoder.get();
+            analogEncoder.getAbsolutePosition();
+            return analogEncoder.getAbsolutePosition();
         }
     }
 }
