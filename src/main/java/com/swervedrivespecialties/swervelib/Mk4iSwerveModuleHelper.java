@@ -189,7 +189,7 @@ public final class Mk4iSwerveModuleHelper {
                 driveMotorPort,
                 new SteerConfiguration<>(
                         steerMotorPort,
-                        new AnalogAbsoluteConfiguration(steerEncoderPort)
+                        new AnalogAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
         );
     }
@@ -244,7 +244,7 @@ public final class Mk4iSwerveModuleHelper {
                 driveMotorPort,
                 new SteerConfiguration<>(
                         steerMotorPort,
-                        new AnalogAbsoluteConfiguration(steerEncoderPort)
+                        new AnalogAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
         );
     }
@@ -300,7 +300,7 @@ public final class Mk4iSwerveModuleHelper {
                 driveMotorPort,
                 new SteerConfiguration<>(
                         steerMotorPort,
-                        new AnalogAbsoluteConfiguration(steerEncoderPort)
+                        new AnalogAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
         );
     }
@@ -355,7 +355,7 @@ public final class Mk4iSwerveModuleHelper {
                 driveMotorPort,
                 new SteerConfiguration<>(
                         steerMotorPort,
-                        new AnalogAbsoluteConfiguration(steerEncoderPort)
+                        new AnalogAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
         );
     }
