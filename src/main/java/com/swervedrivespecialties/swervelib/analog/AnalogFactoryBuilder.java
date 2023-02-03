@@ -25,14 +25,20 @@ public class AnalogFactoryBuilder {
 
         @Override
         public double getAbsoluteAngle() {
-            double absoluteAngle = Math.toRadians(analogEncoder.get());
+            double absoluteAngle = analogEncoder.getAbsolutePosition();
 
-            absoluteAngle %= 2.0 * Math.PI;
-            if (absoluteAngle < 0.0) {
-                absoluteAngle += 2.0 * Math.PI;
-            }
+            // absoluteAngle %= 2.0 * Math.PI;
+            // if (absoluteAngle < 0.0) {
+            //     absoluteAngle += 2.0 * Math.PI;
+            // }
 
-            return absoluteAngle;
+            // This magic number is to get us to 360
+            return absoluteAngle * 6.271777;        }
+
+        @Override
+        public double getRawAbsoluteAngle() {
+            double absoluteRawAngle = analogEncoder.get();
+            return absoluteRawAngle;
         }
     }
 }

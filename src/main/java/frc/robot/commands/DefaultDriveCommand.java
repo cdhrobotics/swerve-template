@@ -8,8 +8,11 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 import java.util.function.DoubleSupplier;
 
+import com.swervedrivespecialties.swervelib.analog.AnalogFactoryBuilder;
+
 public class DefaultDriveCommand extends CommandBase {
     private final DrivetrainSubsystem m_drivetrainSubsystem;
+    
 
     private final DoubleSupplier m_translationXSupplier;
     private final DoubleSupplier m_translationYSupplier;
@@ -38,11 +41,12 @@ public class DefaultDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
+        
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
         if(m_drivetrainSubsystem.getSelectorDriveMode() == m_drivetrainSubsystem.kField) {
         m_drivetrainSubsystem.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
-                    -modifyAxis(m_translationXSupplier.getAsDouble(), xLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                    modifyAxis(m_translationXSupplier.getAsDouble(), xLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
                     modifyAxis(m_translationYSupplier.getAsDouble(), yLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
                     getTurnValue(),
                     m_drivetrainSubsystem.getGyroscopeRotation()
@@ -53,7 +57,7 @@ public class DefaultDriveCommand extends CommandBase {
         } else {
             m_drivetrainSubsystem.drive(
                 new ChassisSpeeds(
-                    -modifyAxis(m_translationXSupplier.getAsDouble(), xLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                    modifyAxis(m_translationXSupplier.getAsDouble(), xLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
                     modifyAxis(m_translationYSupplier.getAsDouble(), yLimiter) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
                     getTurnValue()
                 )
@@ -61,8 +65,10 @@ public class DefaultDriveCommand extends CommandBase {
             System.out.println("Calling Robot");
         }
 
-        SmartDashboard.putNumber("FL Module angle: " , this.m_drivetrainSubsystem.m_frontLeftModule.getSteerAngle());
-        SmartDashboard.putNumber("BL Module angle: " , this.m_drivetrainSubsystem.m_backLeftModule.getSteerAngle());
+        
+        // SmartDashboard.putNumber("FL Module angle: " , this.m_drivetrainSubsystem.m_frontLeftModule.getSteerEncoder().getAbsoluteAngle());
+        SmartDashboard.putNumber("BL Absolute Angle Get: " , this.m_drivetrainSubsystem.m_backLeftModule.getSteerEncoder().getAbsoluteAngle());
+        // SmartDashboard.putNumber("Analog Encoder value", m_AnalogFactoryBuilder.m_frontLeftModule.));
         // System.out.println(this.m_drivetrainSubsystem.m_frontLeftModule.getSteerMotor().getAbsoluteAngle();
     }
 

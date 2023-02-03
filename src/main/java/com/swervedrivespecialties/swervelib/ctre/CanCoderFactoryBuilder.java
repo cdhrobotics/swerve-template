@@ -77,6 +77,12 @@ public class CanCoderFactoryBuilder {
         public Object getInternal() {
             return this.encoder;
         }
+
+        @Override
+        public double getRawAbsoluteAngle() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
     }
 
     public enum Direction {
