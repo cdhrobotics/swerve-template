@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -25,6 +26,9 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
   private final XboxController m_controller = new XboxController(0);
+  private final SlewRateLimiter xSlewRateLimiter = new SlewRateLimiter(2, 2, 2);
+  private final SlewRateLimiter ySlewRateLimiter = new SlewRateLimiter(2, 2, 2);
+  private final SlewRateLimiter rSlewRateLimiter = new SlewRateLimiter(2, 2, 2);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -37,13 +41,14 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(-m_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(m_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+            xSlewRateLimiter, ySlewRateLimiter, rSlewRateLimiter
     ));
 
     // Configure the button bindings
-    //configureButtonBindings();
+    configureButtonBindings();
   }
 
   /**
@@ -52,12 +57,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  // private void configureButtonBindings() {
-  //   // Back button zeros the gyroscope
-  //   new Button(m_controller::getBButton)
-  //           // No requirements because we don't need to interrupt anything
-  //           .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
-  // }
+  private void configureButtonBindings() {
+    // Back button zeros the gyroscope
+    // new Button(m_controller::getBackButton)
+    //         // No requirements because we don't need to interrupt anything
+    //         //.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -81,6 +86,8 @@ public class RobotContainer {
     }
   }
 
+
+
   private static double modifyAxis(double value) {
     // Deadband
     value = deadband(value, 0.05);
@@ -91,3 +98,4 @@ public class RobotContainer {
     return value;
   }
 }
+
